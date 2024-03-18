@@ -2,10 +2,10 @@ package schema
 
 import "time"
 
-type Organization struct {
+type Partner struct {
 	ID        int64
 	Name      string
-	IsActive  bool
+	IsStatus  int8
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

@@ -1,0 +1,8 @@
+github.com/ggicci/httpin v0.17.0 h1:xp69c7FnWYc9/AFWDNeNQBihiJ/Gxh5iLhFpunXX+TE=
+github.com/ggicci/httpin v0.17.0/go.mod h1:aUOQkFFWe9Wf+BERDqD8NlfFY/3Z+RavjCD7E8dZivI=
+github.com/ggicci/owl v0.7.0 h1:+AMlCR0AY7j72q7hjtN4pm8VJiikwpROtMgvPnXtuik=
+github.com/ggicci/owl v0.7.0/go.mod h1:TRPWshRwYej6uES//YW5aNgLB370URwyta1Ytfs7KXs=
+github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/justinas/alice v1.2.0 h1:+MHSA/vccVCF4Uq37S42jwlkvI2Xzl7zTPCN5BnZNVo=
+github.com/justinas/alice v1.2.0/go.mod h1:fN5HRH/reO/zrUflLfTN43t3vXvKzvZIENsNEe7i7qA=
