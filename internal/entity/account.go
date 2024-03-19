@@ -15,8 +15,8 @@ type AccountSchema struct {
 	UpdatedAt time.Time
 }
 
-type CreateAccount struct {
-	Body *AccountBodyJson `in:"body=json"`
+type CreateAccountInput struct {
+	Payload *AccountBodyJson `in:"body=json"`
 }
 
 type AccountBodyJson struct {
