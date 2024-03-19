@@ -1,4 +1,4 @@
-package response
+package api
 
 import (
 	"encoding/json"
@@ -7,7 +7,23 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/ggicci/httpin"
+	"github.com/justinas/alice"
 )
+
+var (
+	HandleChain = alice.New
+)
+
+func ParseInput[T any]() func(http.Handler) http.Handler {
+	var d T
+	return httpin.NewInput(d)
+}
+
+func TakeInput[T any](r *http.Request) *T {
+	return r.Context().Value(httpin.Input).(*T)
+}
 
 const (
 	_DefaultCode_Created       = http.StatusCreated
@@ -26,7 +42,7 @@ type (
 	}
 )
 
-func NewRes[T any]() *Res[T] {
+func NewResponse[T any]() *Res[T] {
 	return &Res[T]{}
 }
 
@@ -142,22 +158,22 @@ func NewMeta() *Meta {
 	return &Meta{}
 }
 
-func (m *Meta) SetPage(page int) *Meta {
-	m.Page = int64(page)
+func (m *Meta) SetPage(n int) *Meta {
+	m.Page = int64(n)
 	return m
 }
 
-func (m *Meta) SetPerPage(perPage int) *Meta {
-	m.PerPage = int64(perPage)
+func (m *Meta) SetPerPage(n int) *Meta {
+	m.PerPage = int64(n)
 	return m
 }
 
-func (m *Meta) SetTotalPages(totalPages int) *Meta {
-	m.TotalPages = int64(totalPages)
+func (m *Meta) SetTotalPages(n int) *Meta {
+	m.TotalPages = int64(n)
 	return m
 }
 
-func (m *Meta) SetTotalRecord(totalRecord int) *Meta {
-	m.TotalRecords = int64(totalRecord)
+func (m *Meta) SetTotalRecord(n int64) *Meta {
+	m.TotalRecords = n
 	return m
 }

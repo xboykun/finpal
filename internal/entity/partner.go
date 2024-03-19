@@ -1,8 +1,8 @@
-package schema
+package entity
 
 import "time"
 
-type Partner struct {
+type PartnerSchema struct {
 	ID        int64
 	Name      string
 	IsStatus  int8
