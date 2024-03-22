@@ -11,9 +11,7 @@ import (
 func AccountRouter(h *http.ServeMux) {
 	h.Handle("POST /api/v1/account/create", lib.
 		HttpMiddlewareChain(
-			lib.HttpInputParser[entity.CreateAccountInput](
-				lib.WithHttpErrorParser(lib.DefaultMiddlewareErrorHandler),
-			),
+			lib.HttpInputParser[entity.CreateAccountInput](lib.WithHttpErrorParser(lib.DefaultMiddlewareError)),
 		).
 		ThenFunc(handler.CreateAccount),
 	)

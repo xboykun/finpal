@@ -169,6 +169,12 @@ func (r *HttpResImp[T]) InternalError() HttpRes[T] {
 
 func (r *HttpResImp[T]) JSON(rw http.ResponseWriter) error {
 	if r == nil {
+		var (
+			code    = strconv.FormatInt(_InternalError, 10)
+			message = _InternalErrorMessage
+		)
+
+		DefaultInternalError(rw, &code, &message)
 		return errors.New("response is nil")
 	}
 
@@ -177,7 +183,7 @@ func (r *HttpResImp[T]) JSON(rw http.ResponseWriter) error {
 	rw.WriteHeader(r.httpStatusCode)
 
 	if err := json.NewEncoder(rw).Encode(r); err != nil {
-		DefaultInternalErrorHandler(rw, &r.Code, &r.Msg)
+		DefaultInternalError(rw, &r.Code, &r.Msg)
 		return err
 	}
 
