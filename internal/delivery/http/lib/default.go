@@ -16,9 +16,9 @@ const (
 	_Error         = http.StatusBadRequest
 	_InternalError = http.StatusInternalServerError
 
-	_DecodeErrorMessage  = "invalid decode request"
+	_DecodeErrorMessage  = "error decode request"
 	_DecodeErrorTemplate = `{"code": %s,"message":%s, "data": null}`
-	_EncodeErrorMessage  = "invalid encode response"
+	_EncodeErrorMessage  = "error encode response"
 )
 
 var (
@@ -29,7 +29,7 @@ var (
 )
 
 var (
-	HttpHandleChain = alice.New
+	HttpMiddlewareChain = alice.New
 
 	DefaultInternalErrorHandler = func(rw http.ResponseWriter, code, msg *string) {
 		if len(*code) <= 0 {
@@ -52,7 +52,7 @@ type (
 	Option core.Option
 )
 
-func WithHttpErrorHandler(custom func(w http.ResponseWriter, r *http.Request, err error)) Option {
+func WithHttpErrorParser(custom func(w http.ResponseWriter, r *http.Request, err error)) Option {
 	return Option(core.WithErrorHandler(custom))
 }
 
@@ -64,7 +64,7 @@ func WithHttpNestedDirectivesEnabled(enable bool) Option {
 	return Option(core.WithNestedDirectivesEnabled(enable))
 }
 
-func HttpParseInput[T any](opts ...Option) func(http.Handler) http.Handler {
+func HttpInputParser[T any](opts ...Option) func(http.Handler) http.Handler {
 	var (
 		d T
 		o = make([]core.Option, len(opts))

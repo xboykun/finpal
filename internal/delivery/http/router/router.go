@@ -10,21 +10,21 @@ import (
 
 func AccountRouter(h *http.ServeMux) {
 	h.Handle("POST /api/v1/account/create", lib.
-		HttpHandleChain(
-			lib.HttpParseInput[entity.CreateAccountInput](
-				lib.WithHttpErrorHandler(lib.DefaultMiddlewareErrorHandler),
+		HttpMiddlewareChain(
+			lib.HttpInputParser[entity.CreateAccountInput](
+				lib.WithHttpErrorParser(lib.DefaultMiddlewareErrorHandler),
 			),
 		).
 		ThenFunc(handler.CreateAccount),
 	)
 
 	h.Handle("GET /api/v1/account/detail", lib.
-		HttpHandleChain().
+		HttpMiddlewareChain().
 		ThenFunc(nil),
 	)
 
 	h.Handle("PATCH /api/v1/account/status", lib.
-		HttpHandleChain().
+		HttpMiddlewareChain().
 		ThenFunc(nil),
 	)
 }

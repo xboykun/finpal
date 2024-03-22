@@ -1,9 +1,10 @@
 package handler
 
 import (
+	"net/http"
+
 	"nami/internal/delivery/http/lib"
 	"nami/internal/entity"
-	"net/http"
 )
 
 func CreateAccount(rw http.ResponseWriter, r *http.Request) {

@@ -3,7 +3,7 @@ package lib
 import (
 	"encoding/json"
 	"errors"
-	"nami/pkg/res"
+	"nami/pkg/response"
 	"net/http"
 	"strconv"
 )
@@ -22,7 +22,7 @@ type (
 
 	// Setup Response
 	HttpSetup[T any] interface {
-		SetMeta(meta *res.Meta) HttpRes[T]
+		SetMeta(meta *response.Meta) HttpRes[T]
 		SetCode(code string) HttpRes[T]
 		SetMessage(msg string) HttpRes[T]
 		SetData(d T) HttpRes[T]
@@ -51,18 +51,18 @@ type (
 	}
 
 	HttpResImp[T any] struct {
-		*res.Res[T]
-		httpCode int `json:"-"`
+		*response.Res[T]
+		httpStatusCode int `json:"-"`
 	}
 )
 
 func NewHttpRes[T any]() HttpRes[T] {
 	return &HttpResImp[T]{
-		Res: new(res.Res[T]),
+		Res: new(response.Res[T]),
 	}
 }
 
-func (r *HttpResImp[T]) SetMeta(meta *res.Meta) HttpRes[T] {
+func (r *HttpResImp[T]) SetMeta(meta *response.Meta) HttpRes[T] {
 	r.Res.SetMeta(meta)
 	return r
 }
@@ -83,7 +83,7 @@ func (r *HttpResImp[T]) SetData(d T) HttpRes[T] {
 }
 
 func (r *HttpResImp[T]) Status(code int) HttpRes[T] {
-	r.httpCode = code
+	r.httpStatusCode = code
 	return r
 }
 
@@ -100,7 +100,7 @@ func (r *HttpResImp[T]) Created() HttpRes[T] {
 		r.SetCode(strconv.FormatInt(_Created, 10))
 	}
 
-	if r.httpCode <= 0 {
+	if r.httpStatusCode <= 0 {
 		r.Status(_Created)
 	}
 
@@ -120,7 +120,7 @@ func (r *HttpResImp[T]) Success() HttpRes[T] {
 		r.SetCode(strconv.FormatInt(_Success, 10))
 	}
 
-	if r.httpCode <= 0 {
+	if r.httpStatusCode <= 0 {
 		r.Status(_Success)
 	}
 
@@ -140,7 +140,7 @@ func (r *HttpResImp[T]) Error() HttpRes[T] {
 		r.SetCode(strconv.FormatInt(_Error, 10))
 	}
 
-	if r.httpCode <= 0 {
+	if r.httpStatusCode <= 0 {
 		r.Status(_Error)
 	}
 
@@ -160,7 +160,7 @@ func (r *HttpResImp[T]) InternalError() HttpRes[T] {
 		r.SetCode(strconv.FormatInt(_InternalError, 10))
 	}
 
-	if r.httpCode <= 0 {
+	if r.httpStatusCode <= 0 {
 		r.Status(_InternalError)
 	}
 
@@ -174,7 +174,7 @@ func (r *HttpResImp[T]) JSON(rw http.ResponseWriter) error {
 
 	rw.Header().Set("Accept", "application/json")
 	rw.Header().Set("Content-Type", "application/json")
-	rw.WriteHeader(r.httpCode)
+	rw.WriteHeader(r.httpStatusCode)
 
 	if err := json.NewEncoder(rw).Encode(r); err != nil {
 		DefaultInternalErrorHandler(rw, &r.Code, &r.Msg)
