@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-
-	"github.com/justinas/alice"
 )
 
 const (
@@ -27,8 +25,6 @@ var (
 )
 
 var (
-	HttpMiddlewareChain = alice.New
-
 	DefaultInternalError = func(rw http.ResponseWriter, code, msg *string) {
 		if len(*code) <= 0 {
 			*code = strconv.FormatInt(int64(_InternalError), 10)
@@ -41,7 +37,7 @@ var (
 		rw.Write([]byte(fmt.Sprintf(_DecodeErrorTemplate, *code, *msg)))
 	}
 
-	DefaultMiddlewareError = func(rw http.ResponseWriter, r *http.Request, err error) {
+	DefaultParseInputError = func(rw http.ResponseWriter, r *http.Request, err error) {
 		NewHttpRes[any]().SetMessage(_DecodeErrorMessage).Error().JSON(rw)
 	}
 )

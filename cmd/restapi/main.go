@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"log"
+	"nami/internal/delivery/http/middleware"
 	"nami/internal/delivery/http/router"
 	"net/http"
 	"os"
@@ -26,8 +27,13 @@ func main() {
 		addr = "localhost:5678"
 		mux  = http.NewServeMux()
 		srv  = http.Server{
-			Addr:              addr,
-			Handler:           mux,
+			Addr: addr,
+			Handler: middleware.
+				Chain(
+					middleware.Logger,
+					middleware.Recoverer,
+				).
+				Then(mux),
 			ReadTimeout:       5 * time.Second,
 			ReadHeaderTimeout: 5 * time.Second,
 			WriteTimeout:      5 * time.Second,

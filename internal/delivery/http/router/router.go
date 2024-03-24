@@ -4,25 +4,27 @@ import (
 	"net/http"
 
 	"nami/internal/delivery/http/handler"
-	"nami/internal/delivery/http/lib"
+	"nami/internal/delivery/http/middleware"
 	"nami/internal/entity"
 )
 
 func AccountRouter(h *http.ServeMux) {
-	h.Handle("POST /api/v1/account/create", lib.
-		HttpMiddlewareChain(
-			lib.HttpInputParser[entity.CreateAccountInput](lib.WithHttpErrorParser(lib.DefaultMiddlewareError)),
+	h.Handle("POST /api/v1/account/create", middleware.
+		Chain(
+			middleware.NewInput[entity.CreateAccountInput](
+				middleware.InputParseErrorHandler,
+			),
 		).
 		ThenFunc(handler.CreateAccount),
 	)
 
-	h.Handle("GET /api/v1/account/detail", lib.
-		HttpMiddlewareChain().
+	h.Handle("POST /api/v1/account/detail", middleware.
+		Chain().
 		ThenFunc(nil),
 	)
 
-	h.Handle("PATCH /api/v1/account/status", lib.
-		HttpMiddlewareChain().
+	h.Handle("POST /api/v1/account/status", middleware.
+		Chain().
 		ThenFunc(nil),
 	)
 }
